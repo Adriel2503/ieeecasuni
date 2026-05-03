@@ -131,6 +131,7 @@ export function Footer() {
           <InternalLink href="/proyectos">Proyectos</InternalLink>
           <InternalLink href="/equipo">Equipo</InternalLink>
           <InternalLink href="/recursos">Recursos</InternalLink>
+          <InternalLink href="/oportunidades">Oportunidades</InternalLink>
           <InternalLink href="/contacto">Contacto</InternalLink>
         </FooterColumn>
 
