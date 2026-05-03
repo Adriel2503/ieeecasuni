@@ -1,0 +1,112 @@
+# ─────────────────────────────────────────────────────────────
+# IEEE CAS UNI — root .gitignore
+# ─────────────────────────────────────────────────────────────
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Build output
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing & coverage
+coverage/
+.nyc_output/
+
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+.secrets/
+secrets.json
+
+# Supabase (when integrated)
+**/supabase/.branches/
+**/supabase/.temp/
+**/supabase/migrations/*.local.sql
+
+# Vercel
+.vercel/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+lerna-debug.log*
+
+# Editor / IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+*.swp
+*.swo
+*~
+.history/
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Temp / cache
+.cache/
+.temp/
+.tmp/
+*.tmp
+*.bak
+
+# Brand kit source (assets ya copiados a web/public/brand)
+CAS UNI*/
+*.zip
+
+# Material de referencia scraped (no es código del proyecto)
+Bienvenido*
+screencapture-*
+*.descarga
+
+# Claude / agent local config
+.claude/
+
+# Plan files (working notes — viven en ~/.claude/plans)
+plans/
+
+# Local-only docs / drafts
+*.draft.md
+notas/
+DRAFT-*
+
+# Python (por si hay scripts auxiliares)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+
+# Misc
+*.pid
+*.seed
+*.pid.lock
