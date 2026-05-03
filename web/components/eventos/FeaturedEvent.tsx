@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/Badge'
+import { EventoBadge } from './EventoBadge'
 import { buttonStyles } from '@/components/ui/Button'
 import type { Evento, EventoTipo } from '@/lib/data/eventos'
 import { colors } from '@/lib/tokens'
@@ -53,7 +53,7 @@ export function FeaturedEvent({ evento }: { evento: Evento }) {
               ★ Evento destacado
             </span>
             <span className="text-gray-300">·</span>
-            <Badge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
+            <EventoBadge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
           </div>
 
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 leading-tight mb-4 max-w-2xl">

@@ -77,7 +77,9 @@ export const certificados: Certificado[] = [
 ]
 
 export function findCertificado(codigo: string): Certificado | undefined {
-  return certificados.find((c) => c.codigo === codigo.toUpperCase())
+  if (!codigo?.trim()) return undefined
+  const norm = codigo.trim().toUpperCase()
+  return certificados.find((c) => c.codigo === norm)
 }
 
 export function listEjemplos(n: number = 3): Certificado[] {

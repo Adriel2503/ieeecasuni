@@ -1,14 +1,10 @@
 import type { Oportunidad } from '@/lib/data/oportunidades'
+import { UBICACION_LABEL } from '@/lib/data/oportunidades'
+import { isSafeHttpUrl } from '@/lib/utils/url'
 import { DeadlineChip } from './DeadlineChip'
 import { CategoryBadge } from './CategoryBadge'
 import { colors } from '@/lib/tokens'
-
-const UBICACION_LABEL: Record<string, string> = {
-  lima: 'Lima',
-  peru: 'Perú',
-  remoto: 'Remoto',
-  internacional: 'Internacional',
-}
+import { buttonStyles } from '@/components/ui/Button'
 
 function DiagonalLines() {
   return (
@@ -68,14 +64,23 @@ export function FeaturedOportunidad({ oportunidad }: Props) {
           </p>
         </div>
         <div className="shrink-0 flex flex-col gap-3">
-          <a
-            href={oportunidad.url_aplicacion}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center px-7 py-3.5 text-base font-semibold rounded-[4px] bg-primary-400 text-white hover:bg-primary-500 transition-colors"
-          >
-            Apply →
-          </a>
+          {isSafeHttpUrl(oportunidad.url_aplicacion) ? (
+            <a
+              href={oportunidad.url_aplicacion}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={buttonStyles({ variant: 'primary', size: 'lg' })}
+            >
+              Apply →
+            </a>
+          ) : (
+            <span
+              className={`${buttonStyles({ variant: 'primary', size: 'lg' })} bg-gray-200 text-gray-500 cursor-not-allowed hover:bg-gray-200`}
+              title="Link no disponible"
+            >
+              Sin link
+            </span>
+          )}
         </div>
       </div>
     </article>

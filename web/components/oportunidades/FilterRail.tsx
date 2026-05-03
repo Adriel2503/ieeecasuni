@@ -1,16 +1,28 @@
 'use client'
-import type { Categoria, Nivel, Ubicacion } from '@/lib/data/oportunidades'
+import {
+  CATEGORIAS_ALL,
+  type Categoria,
+  type Nivel,
+  type Ubicacion,
+} from '@/lib/data/oportunidades'
 
-const CATEGORIAS: { value: Categoria | 'todas'; label: string }[] = [
-  { value: 'todas', label: 'Todas' },
-  { value: 'empleo', label: 'Empleo' },
-  { value: 'pasantia', label: 'Pasantías' },
-  { value: 'beca', label: 'Becas' },
-  { value: 'concurso', label: 'Concursos' },
-  { value: 'cfp', label: 'Call for Papers' },
-  { value: 'voluntariado', label: 'Voluntariado' },
-  { value: 'convocatoria', label: 'Convocatorias' },
-]
+// Record fuerza a TS a incluir todas las categorías; si añades una al type
+// y olvidas su label, la build rompe aquí.
+const CATEGORY_LABELS: Record<Categoria | 'todas', string> = {
+  todas: 'Todas',
+  empleo: 'Empleo',
+  pasantia: 'Pasantías',
+  beca: 'Becas',
+  concurso: 'Concursos',
+  cfp: 'Call for Papers',
+  voluntariado: 'Voluntariado',
+  convocatoria: 'Convocatorias',
+}
+
+const CATEGORIAS = CATEGORIAS_ALL.map((value) => ({
+  value,
+  label: CATEGORY_LABELS[value],
+}))
 
 const UBICACIONES: { value: Ubicacion; label: string }[] = [
   { value: 'lima', label: 'Lima' },

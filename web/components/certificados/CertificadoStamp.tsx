@@ -1,5 +1,3 @@
-'use client'
-
 export function CertificadoStamp() {
   return (
     <div className="animate-seal-stamp inline-flex items-center justify-center w-20 h-20 rounded-full border-2 border-primary-500 bg-primary-50">

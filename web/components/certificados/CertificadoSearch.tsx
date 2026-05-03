@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState, type FormEvent } from 'react'
+import { useState, useTransition, type FormEvent } from 'react'
 import { buttonStyles } from '@/components/ui/Button'
-import { findCertificado, listEjemplos } from '@/lib/data/certificados'
+import { listEjemplos } from '@/lib/data/certificados'
+import { verifyCertificado } from '@/app/(public)/certificados/actions'
 
 const CODE_REGEX = /^CAS-\d{4}-[A-Z0-9]{6}$/
 
@@ -21,11 +21,10 @@ function formatCode(raw: string): string {
 }
 
 export function CertificadoSearch() {
-  const router = useRouter()
   const [value, setValue] = useState('CAS-')
   const [error, setError] = useState<string | null>(null)
   const [shake, setShake] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const isValid = CODE_REGEX.test(value)
   const ejemplos = listEjemplos(3)
@@ -40,17 +39,16 @@ export function CertificadoSearch() {
   }
 
   function attempt(codigo: string) {
-    setLoading(true)
     setError(null)
-    const found = findCertificado(codigo)
-    if (found) {
-      router.push(`/certificados/${codigo}`)
-    } else {
-      setLoading(false)
-      setError(`Código ${codigo} no encontrado.`)
-      setShake(true)
-      setTimeout(() => setShake(false), 500)
-    }
+    startTransition(async () => {
+      // Server action: redirects on success (throws), returns { ok: false, error } on miss.
+      const result = await verifyCertificado(codigo)
+      if (result && result.ok === false) {
+        setError(result.error)
+        setShake(true)
+        setTimeout(() => setShake(false), 500)
+      }
+    })
   }
 
   function handleSubmit(e: FormEvent) {
@@ -94,10 +92,10 @@ export function CertificadoSearch() {
           />
           <button
             type="submit"
-            disabled={!isValid || loading}
+            disabled={!isValid || isPending}
             className={`${buttonStyles({ variant: 'primary', size: 'lg' })} disabled:opacity-40 disabled:cursor-not-allowed`}
           >
-            {loading ? 'verificando...' : 'Verificar'}
+            {isPending ? 'verificando...' : 'Verificar'}
           </button>
         </div>
 

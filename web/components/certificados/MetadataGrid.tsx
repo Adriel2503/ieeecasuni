@@ -1,5 +1,7 @@
 import type { Certificado } from '@/lib/data/certificados'
 
+const HASH_PREVIEW_LEN = 8
+
 interface Props {
   certificado: Certificado
 }
@@ -27,7 +29,7 @@ function Cell({
 
 export function MetadataGrid({ certificado }: Props) {
   const hash = certificado.hash ?? '—'
-  const hashShort = hash.length > 8 ? `${hash.slice(0, 8)}…` : hash
+  const hashShort = hash.length > HASH_PREVIEW_LEN ? `${hash.slice(0, HASH_PREVIEW_LEN)}…` : hash
 
   return (
     <div className="border-t border-gray-200 pt-8">

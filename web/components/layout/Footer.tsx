@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 
@@ -115,10 +116,13 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         {/* Identity */}
         <div className="md:col-span-2 lg:col-span-1">
-          <img
+          <Image
             src="/brand/logo-horizontal-white.png"
             alt="IEEE CAS UNI — Universidad Nacional de Ingeniería Student Branch"
+            width={2079}
+            height={339}
             className="h-12 w-auto mb-4"
+            priority={false}
           />
           <p className="text-sm leading-relaxed text-gray-400 max-w-xs">
             A Student Chapter of the IEEE Circuits and Systems Society.

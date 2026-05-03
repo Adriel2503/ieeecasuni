@@ -1,3 +1,4 @@
+// Generic card primitive — use directly for simple cases. Feature-specific cards may have their own shells (e.g. OportunidadCard, EventCard).
 import { HTMLAttributes } from 'react'
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {

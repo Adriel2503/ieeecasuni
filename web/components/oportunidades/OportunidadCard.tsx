@@ -1,14 +1,8 @@
 import type { Oportunidad } from '@/lib/data/oportunidades'
-import { getDiasRestantes } from '@/lib/data/oportunidades'
+import { getDiasRestantes, UBICACION_LABEL } from '@/lib/data/oportunidades'
+import { isSafeHttpUrl } from '@/lib/utils/url'
 import { DeadlineChip } from './DeadlineChip'
 import { CategoryBadge } from './CategoryBadge'
-
-const UBICACION_LABEL: Record<string, string> = {
-  lima: 'Lima',
-  peru: 'Perú',
-  remoto: 'Remoto',
-  internacional: 'Internacional',
-}
 
 function PinIcon() {
   return (
@@ -56,14 +50,23 @@ export function OportunidadCard({ oportunidad }: Props) {
           <PinIcon />
           {UBICACION_LABEL[oportunidad.ubicacion]}
         </span>
-        <a
-          href={oportunidad.url_aplicacion}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-semibold text-primary-400 hover:text-primary-500"
-        >
-          Apply →
-        </a>
+        {isSafeHttpUrl(oportunidad.url_aplicacion) ? (
+          <a
+            href={oportunidad.url_aplicacion}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-primary-400 hover:text-primary-500"
+          >
+            Apply →
+          </a>
+        ) : (
+          <span
+            className="text-sm font-semibold text-gray-400 cursor-not-allowed"
+            title="Link no disponible"
+          >
+            Sin link
+          </span>
+        )}
       </div>
     </article>
   )

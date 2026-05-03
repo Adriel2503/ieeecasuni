@@ -1,4 +1,4 @@
-import { Badge } from '@/components/ui/Badge'
+import { EventoBadge } from './EventoBadge'
 import { buttonStyles } from '@/components/ui/Button'
 import { DateBlock } from './DateBlock'
 import type { Evento, EventoTipo } from '@/lib/data/eventos'
@@ -49,7 +49,7 @@ export function EventCard({ evento }: { evento: Evento }) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-2">
-            <Badge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
+            <EventoBadge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
             {!past && cupoLleno && (
               <span className="text-[9px] font-bold tracking-widest text-secondary-400 bg-secondary-100 px-1.5 py-0.5 rounded-sm">
                 CUPO LLENO

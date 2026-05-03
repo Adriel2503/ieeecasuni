@@ -2,6 +2,7 @@
 import { useMemo, useState } from 'react'
 import {
   filterOportunidades,
+  computeFacetCounts,
   type Categoria,
   type Nivel,
   type Oportunidad,
@@ -17,18 +18,6 @@ interface Props {
   cerradas: Oportunidad[]
   featured?: Oportunidad
 }
-
-const CATEGORIAS_ALL: (Categoria | 'todas')[] = [
-  'todas',
-  'pasantia',
-  'beca',
-  'concurso',
-  'cfp',
-  'voluntariado',
-  'convocatoria',
-]
-const UBICACIONES_ALL: Ubicacion[] = ['lima', 'peru', 'remoto', 'internacional']
-const NIVELES_ALL: Nivel[] = ['pregrado', 'posgrado', 'abierto']
 
 export function OportunidadesClient({ abiertas, cerradas, featured }: Props) {
   const [categoria, setCategoria] = useState<Categoria | 'todas'>('todas')
@@ -59,35 +48,12 @@ export function OportunidadesClient({ abiertas, cerradas, featured }: Props) {
     ? filtered.filter((o) => o.id !== featured.id)
     : filtered
 
-  // Counts respect ubicacion+nivel filters but not categoria (so radio shows
-  // counts under current cross-filters).
-  const categoryCounts = useMemo(() => {
-    const out = {} as Record<Categoria | 'todas', number>
-    for (const c of CATEGORIAS_ALL) {
-      out[c] = filterOportunidades(sourceList, {
-        categoria: c,
-        ubicaciones,
-        niveles,
-      }).length
-    }
-    return out
-  }, [sourceList, ubicaciones, niveles])
-
-  const ubicacionCounts = useMemo(() => {
-    const out = {} as Record<Ubicacion, number>
-    for (const u of UBICACIONES_ALL) {
-      out[u] = sourceList.filter((o) => o.ubicacion === u).length
-    }
-    return out
-  }, [sourceList])
-
-  const nivelCounts = useMemo(() => {
-    const out = {} as Record<Nivel, number>
-    for (const n of NIVELES_ALL) {
-      out[n] = sourceList.filter((o) => o.nivel === n).length
-    }
-    return out
-  }, [sourceList])
+  // One pass: categoria respects ubicacion+nivel cross-filters, ubicacion/nivel
+  // are raw source counts (toggling one facet shouldn't zero its siblings).
+  const facets = useMemo(
+    () => computeFacetCounts(sourceList, { ubicaciones, niveles }),
+    [sourceList, ubicaciones, niveles]
+  )
 
   const toggleUbicacion = (u: Ubicacion) =>
     setUbicaciones((curr) =>
@@ -106,9 +72,9 @@ export function OportunidadesClient({ abiertas, cerradas, featured }: Props) {
           ubicaciones={ubicaciones}
           niveles={niveles}
           showClosed={showClosed}
-          categoryCounts={categoryCounts}
-          ubicacionCounts={ubicacionCounts}
-          nivelCounts={nivelCounts}
+          categoryCounts={facets.categoria}
+          ubicacionCounts={facets.ubicacion}
+          nivelCounts={facets.nivel}
           onCategoriaChange={setCategoria}
           onToggleUbicacion={toggleUbicacion}
           onToggleNivel={toggleNivel}

@@ -7,7 +7,7 @@ const variants: Record<EventoTipo, string> = {
   webinar:     'bg-quaternary-100 text-quaternary-700',
 }
 
-export function Badge({
+export function EventoBadge({
   variant,
   label,
 }: {

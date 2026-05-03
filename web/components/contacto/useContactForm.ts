@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { intenciones, contacto, type Intencion } from '@/lib/data/contacto'
+import { intenciones, type Intencion } from '@/lib/data/contacto'
 import {
   validateContactForm,
   type ContactFormState,
   type ContactFormErrors,
 } from '@/lib/utils/validation'
+import { buildContactMailto } from '@/lib/utils/mailto'
 
 type FormField = keyof ContactFormErrors
 
@@ -84,23 +85,7 @@ export function useContactForm() {
     setErrors(errs)
     if (Object.keys(errs).length > 0) return
 
-    const targetEmail =
-      intencion === 'postular'
-        ? contacto.email_postulaciones
-        : contacto.email_principal
-
-    const asunto = form.asunto.trim() || intencionInfo.asunto_default
-    const body = [
-      `Nombre: ${form.nombre}`,
-      `Email: ${form.email}`,
-      `Tipo: ${intencionInfo.label}`,
-      '',
-      'Mensaje:',
-      form.mensaje,
-    ].join('\n')
-
-    const mailto = `mailto:${targetEmail}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(body)}`
-    window.location.href = mailto
+    window.location.href = buildContactMailto(form, intencion)
     setSuccess(true)
   }
 

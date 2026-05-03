@@ -266,8 +266,32 @@ const MS_PER_DAY = 1000 * 60 * 60 * 24
 
 export function getDiasRestantes(fechaLimite: string): number {
   const limite = new Date(fechaLimite + 'T23:59:59').getTime()
+  if (Number.isNaN(limite)) return -Infinity
   const hoy = Date.now()
   return Math.ceil((limite - hoy) / MS_PER_DAY)
+}
+
+export const CATEGORIAS_ALL: (Categoria | 'todas')[] = [
+  'todas',
+  'empleo',
+  'pasantia',
+  'beca',
+  'concurso',
+  'cfp',
+  'voluntariado',
+  'convocatoria',
+]
+
+export const UBICACIONES_ALL: Ubicacion[] = ['lima', 'peru', 'remoto', 'internacional']
+export const NIVELES_ALL: Nivel[] = ['pregrado', 'posgrado', 'abierto']
+
+// Record<Ubicacion, string> forces TS to break the build if a new Ubicacion
+// is added to the type without a label, mirroring CATEGORY_LABELS.
+export const UBICACION_LABEL: Record<Ubicacion, string> = {
+  lima: 'Lima',
+  peru: 'Perú',
+  remoto: 'Remoto',
+  internacional: 'Internacional',
 }
 
 export type Urgencia = 'safe' | 'warning' | 'urgent' | 'expired'
@@ -327,4 +351,35 @@ export function filterOportunidades(
     predicates.push((o) => nvs.includes(o.nivel))
   }
   return filterCollection(list, { predicates })
+}
+
+export interface FacetCounts {
+  categoria: Record<Categoria | 'todas', number>
+  ubicacion: Record<Ubicacion, number>
+  nivel: Record<Nivel, number>
+}
+
+// Categoria counts respect ubicacion+nivel cross-filters; ubicacion/nivel are
+// raw source counts so toggling one facet does not zero out its own siblings.
+export function computeFacetCounts(
+  source: Oportunidad[],
+  active: { ubicaciones: Ubicacion[]; niveles: Nivel[] }
+): FacetCounts {
+  const categoria = {} as Record<Categoria | 'todas', number>
+  for (const c of CATEGORIAS_ALL) {
+    categoria[c] = filterOportunidades(source, {
+      categoria: c,
+      ubicaciones: active.ubicaciones,
+      niveles: active.niveles,
+    }).length
+  }
+  const ubicacion = {} as Record<Ubicacion, number>
+  for (const u of UBICACIONES_ALL) {
+    ubicacion[u] = source.filter((o) => o.ubicacion === u).length
+  }
+  const nivel = {} as Record<Nivel, number>
+  for (const n of NIVELES_ALL) {
+    nivel[n] = source.filter((o) => o.nivel === n).length
+  }
+  return { categoria, ubicacion, nivel }
 }

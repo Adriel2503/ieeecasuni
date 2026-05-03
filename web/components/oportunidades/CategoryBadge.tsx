@@ -10,6 +10,7 @@ const CATEGORY_LABEL: Record<Categoria, string> = {
   convocatoria: 'CONVOCATORIA',
 }
 
+// purple-500 is a brand-extended token (defined in @theme)
 const CATEGORY_COLOR: Record<Categoria, string> = {
   empleo: 'text-primary-500',
   pasantia: 'text-primary-400',

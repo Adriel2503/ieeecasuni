@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Badge } from '@/components/ui/Badge'
+import { EventoBadge } from '@/components/eventos/EventoBadge'
 import { Card } from '@/components/ui/Card'
 
 type EventoTipo = 'workshop' | 'webinar' | 'competencia' | 'conferencia'
@@ -74,7 +74,7 @@ export function EventosSection() {
           {eventos.map((evento) => (
             <Card key={evento.id} featured={evento.featured} className="p-6 flex flex-col gap-4">
               <div className="flex items-start justify-between">
-                <Badge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
+                <EventoBadge variant={evento.tipo} label={badgeLabels[evento.tipo]} />
                 {evento.featured && (
                   <span className="text-[10px] font-bold text-primary-400 uppercase tracking-wider">
                     Destacado

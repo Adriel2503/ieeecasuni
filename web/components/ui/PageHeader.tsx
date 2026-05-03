@@ -56,6 +56,50 @@ function PcbPattern({ id }: { id: string }) {
   )
 }
 
+function StatItemView({ stat, isDark }: { stat: StatItem; isDark: boolean }) {
+  const defaultColor = isDark ? 'text-white' : 'text-gray-700'
+  return (
+    <>
+      <p
+        className={`text-3xl font-bold tabular-nums ${stat.accentColor ? '' : defaultColor}`}
+        style={stat.accentColor ? { color: stat.accentColor } : undefined}
+      >
+        {stat.value}
+      </p>
+      <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mt-1">
+        {stat.label}
+      </p>
+    </>
+  )
+}
+
+function StatsInline({ stats, isDark }: { stats: StatItem[]; isDark: boolean }) {
+  const dividerClass = isDark
+    ? 'border-l border-gray-700 pl-6'
+    : 'border-l border-gray-300 pl-6 lg:pl-8'
+  return (
+    <div className="flex gap-6 lg:gap-8">
+      {stats.map((s, i) => (
+        <div key={i} className={i > 0 ? dividerClass : ''}>
+          <StatItemView stat={s} isDark={isDark} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function StatsCards({ stats, isDark }: { stats: StatItem[]; isDark: boolean }) {
+  return (
+    <div className="grid grid-cols-3 gap-4 lg:w-[40%]">
+      {stats.map((s, i) => (
+        <div key={i} className="bg-white border border-gray-200 rounded-md p-4 text-center">
+          <StatItemView stat={s} isDark={isDark} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function PageHeader({
   eyebrow,
   title,
@@ -106,46 +150,9 @@ export function PageHeader({
             {children}
           </div>
 
-          {stats && stats.length > 0 && statsLayout === 'inline' && (
-            <div className="flex gap-6 lg:gap-8">
-              {stats.map((s, i) => {
-                const dividerClass = isDark
-                  ? 'border-l border-gray-700 pl-6'
-                  : 'border-l border-gray-300 pl-6 lg:pl-8'
-                const defaultColor = isDark ? 'text-white' : 'text-gray-700'
-                return (
-                  <div key={i} className={i > 0 ? dividerClass : ''}>
-                    <p
-                      className={`text-3xl font-bold tabular-nums ${s.accentColor ? '' : defaultColor}`}
-                      style={s.accentColor ? { color: s.accentColor } : undefined}
-                    >
-                      {s.value}
-                    </p>
-                    <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mt-1">
-                      {s.label}
-                    </p>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
-          {stats && stats.length > 0 && statsLayout === 'cards' && (
-            <div className="grid grid-cols-3 gap-4 lg:w-[40%]">
-              {stats.map((s, i) => (
-                <div key={i} className="bg-white border border-gray-200 rounded-md p-4 text-center">
-                  <p
-                    className={`text-3xl font-bold tabular-nums ${s.accentColor ? '' : 'text-gray-700'}`}
-                    style={s.accentColor ? { color: s.accentColor } : undefined}
-                  >
-                    {s.value}
-                  </p>
-                  <p className="text-[10px] font-bold tracking-widest text-gray-500 uppercase mt-1">
-                    {s.label}
-                  </p>
-                </div>
-              ))}
-            </div>
+          {stats && stats.length > 0 && (statsLayout === 'inline'
+            ? <StatsInline stats={stats} isDark={isDark} />
+            : <StatsCards stats={stats} isDark={isDark} />
           )}
         </div>
       </div>

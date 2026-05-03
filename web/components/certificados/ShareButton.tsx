@@ -4,18 +4,24 @@ import { useState } from 'react'
 import { buttonStyles } from '@/components/ui/Button'
 
 export function ShareButton() {
-  const [copied, setCopied] = useState(false)
+  const [state, setState] = useState<'idle' | 'copied' | 'error'>('idle')
 
   async function handleClick() {
     if (typeof window === 'undefined') return
     try {
       await navigator.clipboard.writeText(window.location.href)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
+      setState('copied')
+      setTimeout(() => setState('idle'), 2000)
     } catch {
-      // ignore
+      setState('error')
+      setTimeout(() => setState('idle'), 3000)
     }
   }
+
+  const label =
+    state === 'copied' ? 'URL copiada' :
+    state === 'error'  ? 'No se pudo copiar' :
+    'Compartir →'
 
   return (
     <button
@@ -23,7 +29,7 @@ export function ShareButton() {
       onClick={handleClick}
       className={buttonStyles({ variant: 'secondary', size: 'md' })}
     >
-      {copied ? 'URL copiada' : 'Compartir →'}
+      {label}
     </button>
   )
 }
