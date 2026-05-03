@@ -137,6 +137,7 @@ export function Footer() {
 
         {/* Red IEEE externa */}
         <FooterColumn title="Recursos">
+          <InternalLink href="/certificados">Verificar certificado</InternalLink>
           <ExternalLink href="https://ieee-cas.org">IEEE CAS Global</ExternalLink>
           <ExternalLink href="https://ieeexplore.ieee.org">IEEE Xplore</ExternalLink>
           <ExternalLink href="https://standards.ieee.org">IEEE Standards</ExternalLink>
