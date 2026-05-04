@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { alumni } from '@/lib/data/equipo'
 
 export function AlumniList() {
@@ -26,6 +27,15 @@ export function AlumniList() {
               </li>
             ))}
           </ul>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-gray-200 flex justify-end">
+          <Link
+            href="/equipo/historia"
+            className="text-sm font-semibold text-primary-500 hover:text-primary-400 transition-colors"
+          >
+            Ver historia completa y juntas pasadas →
+          </Link>
         </div>
       </div>
     </section>
